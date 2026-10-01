@@ -20,7 +20,7 @@ SCAPI_SEARCH_URL = "https://6pt47ivs.api.commercecloud.salesforce.com/search/sho
 SERIES_NAME = "New Balance 574"
 SEEN_SHOES_FILE = "seen_shoes.json"
 
-DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")
+DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "").strip().strip('"\'') or None
 
 # Standard headers mimicking modern browser requests
 DEFAULT_HEADERS = {
