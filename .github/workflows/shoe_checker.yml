@@ -1,0 +1,40 @@
+name: New Balance 574 Daily Shoe Monitor
+
+on:
+  schedule:
+    # 6:30 PM PST daily
+    - cron: '30 18 * * *'
+      timezone: 'America/Los_Angeles'
+  workflow_dispatch: # Allows manual on-demand triggers from GitHub UI
+
+jobs:
+  check-shoes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Shoe Monitor
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python newbalance.py
+
+      - name: Commit state changes
+        if: always()
+        run: |
+          git config --global user.name 'ShoeMonitorBot'
+          git config --global user.email 'bot@users.noreply.github.com'
+          git add seen_shoes.json
+          git diff-index --quiet HEAD || git commit -m "Update seen shoes state [skip ci]"
+          git push
