@@ -2,8 +2,7 @@ name: New Balance 574 Daily Shoe Monitor
 
 on:
   schedule:
-    # 6:30 PM PST daily
-    - cron: '30 18 * * *'
+    - cron: '0 6 * * *'
       timezone: 'America/Los_Angeles'
   workflow_dispatch: # Allows manual on-demand triggers from GitHub UI
 
